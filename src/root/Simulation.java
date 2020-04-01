@@ -19,6 +19,25 @@ public class Simulation {
         initializeSimulation();
     }
 
+    private void initializeSimulation(){
+        locations = new int[this.amountOfPeople][4];
+
+        for(int i = 0; i < this.amountOfPeople; i++){
+            locations[i][0] = (int) (Math.random() * 10000); // posX
+            locations[i][1] = (int) (Math.random() * 10000); // posY
+            locations[i][2] = (int) (Math.random() * 2000) - 1000; // speedX / second
+            locations[i][3] = (int) (Math.random() * 2000) - 1000; // speedY / second
+        }
+
+        this.infections = new boolean[amountOfPeople];
+        infections[0] = true;
+        for(int i = 1; i < this.amountOfPeople; i++){
+            infections[i] = false;
+        }
+
+        this.infectionCount = 1;
+    }
+
     public void updateAmountOfPeople(int amountOfPeople) {
         this.amountOfPeople = amountOfPeople;
         initializeSimulation();
@@ -34,38 +53,19 @@ public class Simulation {
         initializeSimulation();
     }
 
-    private void initializeSimulation(){
-        locations = new int[this.amountOfPeople][4];
-
-        for(int i = 0; i < this.amountOfPeople; i++){
-            locations[i][0] = (int) (Math.random() * 100); // posX
-            locations[i][1] = (int) (Math.random() * 100); // posY
-            locations[i][2] = (int) (Math.random() * 20) - 10; // speedX / second
-            locations[i][3] = (int) (Math.random() * 20) - 10; // speedY / second
-        }
-
-        this.infectionCount = 1;
-        this.infections = new boolean[amountOfPeople];
-
-        infections[0] = true;
-        for(int i = 1; i < this.amountOfPeople; i++){
-            infections[i] = false;
-        }
-    }
-
     public void updateSimulation(double millis){
         for(int i = 0; i < this.amountOfPeople; i++) {
             locations[i][0] += (locations[i][2] * (millis/1000));
             locations[i][1] += (locations[i][3] * (millis/1000));
 
             if(locations[i][0] < 0 ){
-                locations[i][0] += 100;
+                locations[i][0] += 10000;
             } if(locations[i][1] < 0 ){
-                locations[i][1] += 100;
-            } if(locations[i][0] > 100 ){
-                locations[i][0] -= 100;
-            } if(locations[i][1] > 100 ){
-                locations[i][1] -= 100;
+                locations[i][1] += 10000;
+            } if(locations[i][0] > 10000 ){
+                locations[i][0] -= 10000;
+            } if(locations[i][1] > 10000 ){
+                locations[i][1] -= 10000;
             }
 
             System.out.println("(" + locations[i][0] + ", " + locations[i][1] + ")");
