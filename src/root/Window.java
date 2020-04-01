@@ -51,7 +51,7 @@ public class Window {
         this.g = new Group(p);
         this.s = new Scene(g, screenWidth,  screenHeight);
 
-        this.sim = new Simulation(10, 50, 0.1, screenWidth, screenHeight, this);
+        this.sim = new Simulation(10, screenWidth/20, 0.1, screenWidth, screenHeight, this);
 
         initializeScrollers();
         initializeAnimation();
@@ -65,8 +65,8 @@ public class Window {
         populationSlider.setMin(2);
         populationSlider.setMax(50);
         populationSlider.setValue(10);
-        radiusSlider.setMin(1);
-        radiusSlider.setMax(screenWidth);
+        radiusSlider.setMin(5);
+        radiusSlider.setMax(screenWidth/4);
         radiusSlider.setValue(screenWidth/20);
         chanceSlider.setMin(0);
         chanceSlider.setMax(1);
