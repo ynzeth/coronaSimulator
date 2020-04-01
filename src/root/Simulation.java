@@ -6,15 +6,27 @@ public class Simulation {
     private double radius;
     private double chance;
 
+    //screen dimensions
+    private int screenWidth;
+    private int screenHeight;
+
     //simulation variables
     private int[][] locations; // two-dimentional array containing locations and speed for all particles
     private boolean[] infections; // array containing information on whether particles are infected
     private int infectionCount;
 
-    public Simulation(int amountOfPeople, double radius, double chance) {
+    //window
+    private Window w;
+
+    public Simulation(int amountOfPeople, double radius, double chance, int width, int height, Window w) {
         this.amountOfPeople = amountOfPeople;
         this.radius = radius;
         this.chance = chance;
+
+        this.screenWidth = width;
+        this.screenHeight = height;
+
+        this.w = w;
 
         initializeSimulation();
     }
@@ -23,10 +35,10 @@ public class Simulation {
         locations = new int[this.amountOfPeople][4];
 
         for(int i = 0; i < this.amountOfPeople; i++){
-            locations[i][0] = (int) (Math.random() * 10000); // posX
-            locations[i][1] = (int) (Math.random() * 10000); // posY
-            locations[i][2] = (int) (Math.random() * 2000) - 1000; // speedX / second
-            locations[i][3] = (int) (Math.random() * 2000) - 1000; // speedY / second
+            locations[i][0] = (int) (Math.random() * screenWidth); // posX
+            locations[i][1] = (int) (Math.random() * screenHeight); // posY
+            locations[i][2] = (int) (Math.random() * screenWidth) - (screenWidth/2); // speedX / second
+            locations[i][3] = (int) (Math.random() * screenHeight) - (screenHeight/2); // speedY / second
         }
 
         this.infections = new boolean[amountOfPeople];
@@ -41,16 +53,19 @@ public class Simulation {
     public void updateAmountOfPeople(int amountOfPeople) {
         this.amountOfPeople = amountOfPeople;
         initializeSimulation();
+        w.initializeSimulationElements();
     }
 
     public void updateRadius(double radius) {
         this.radius = radius;
         initializeSimulation();
+        w.initializeSimulationElements();
     }
 
     public void updateChance(double chance) {
         this.chance = chance;
         initializeSimulation();
+        w.initializeSimulationElements();
     }
 
     public void updateSimulation(double millis){
@@ -58,14 +73,14 @@ public class Simulation {
             locations[i][0] += (locations[i][2] * (millis/1000));
             locations[i][1] += (locations[i][3] * (millis/1000));
 
-            if(locations[i][0] < 0 ){
-                locations[i][0] += 10000;
-            } if(locations[i][1] < 0 ){
-                locations[i][1] += 10000;
-            } if(locations[i][0] > 10000 ){
-                locations[i][0] -= 10000;
-            } if(locations[i][1] > 10000 ){
-                locations[i][1] -= 10000;
+            if(locations[i][0] < -this.radius){
+                locations[i][0] += screenWidth + (2 * this.radius);
+            } if(locations[i][1] < -this.radius){
+                locations[i][1] += screenHeight + (2 * this.radius);
+            } if(locations[i][0] > screenWidth + this.radius){
+                locations[i][0] -= (screenWidth + (2 * this.radius));
+            } if(locations[i][1] > screenHeight + this.radius){
+                locations[i][1] -= (screenHeight + (2 * this.radius));
             }
 
             System.out.println("(" + locations[i][0] + ", " + locations[i][1] + ")");
@@ -77,6 +92,7 @@ public class Simulation {
                     if(infections[j] == true && inRange(i, j)) {
                         infections[i] = true;
                         infectionCount++;
+                        w.infect(i);
                         break;
                     }
                 }

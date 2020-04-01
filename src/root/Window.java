@@ -42,16 +42,19 @@ public class Window {
     private AnimationTimer timer;
     private Long lastTimeStamp;
 
+    //screen dimensions
+    private final static int screenWidth = 1500;
+    private final static int screenHeight = 800;
+
     public Window() {
         this.p = new Pane();
         this.g = new Group(p);
-        this.s = new Scene(g, 800,  800);
+        this.s = new Scene(g, screenWidth,  screenHeight);
 
-        this.sim = new Simulation(10, 250, 0.1);
+        this.sim = new Simulation(10, 50, 0.1, screenWidth, screenHeight, this);
 
         initializeScrollers();
         initializeAnimation();
-        initializeSimulationElements();
     }
 
     private void initializeScrollers() {
@@ -63,8 +66,8 @@ public class Window {
         populationSlider.setMax(50);
         populationSlider.setValue(10);
         radiusSlider.setMin(1);
-        radiusSlider.setMax(500);
-        radiusSlider.setValue(250);
+        radiusSlider.setMax(screenWidth);
+        radiusSlider.setValue(screenWidth/20);
         chanceSlider.setMin(0);
         chanceSlider.setMax(1);
         chanceSlider.setValue(0.1);
@@ -112,15 +115,17 @@ public class Window {
         g.getChildren().add(h);
     }
 
-    private void initializeSimulationElements(){
+    public void initializeSimulationElements(){
         this.people = new Circle[sim.getAmountOfPeople()];
         this.radii = new Circle[sim.getAmountOfPeople()];
 
+        p.getChildren().removeAll(p.getChildren());
+
         people[0] = new Circle(2, Color.RED);
-        radii[0] = new Circle(sim.getRadius(), new Color(1, 0, 0, 0.5));
+        radii[0] = new Circle(sim.getRadius()/2, new Color(1, 0, 0, 0.5));
         for(int i = 1; i < sim.getAmountOfPeople(); i++){
             people[i] = new Circle(2, Color.GREEN);
-            radii[i] = new Circle(sim.getRadius(), new Color(0, 1, 0, 0.5));
+            radii[i] = new Circle(sim.getRadius()/2, new Color(0, 1, 0, 0.5));
         }
 
         p.getChildren().addAll(people);
@@ -136,16 +141,28 @@ public class Window {
                 long milliSecsPast = (long) ((l - lastTimeStamp) / Math.pow(10, 6)); // Convert to milliseconds
                 sim.updateSimulation(milliSecsPast);
 
+                for(int i = 0; i < people.length; i++) {
+                    people[i].setCenterX(sim.getLocations()[i][0]);
+                    people[i].setCenterY(sim.getLocations()[i][1]);
+
+                    radii[i].setCenterX(sim.getLocations()[i][0]);
+                    radii[i].setCenterY(sim.getLocations()[i][1]);
+                }
 
                 lastTimeStamp = l;
             }
         };
     }
 
+    public void infect(int i) {
+        radii[i].setFill(new Color(1,0,0,0.5));
+    }
+
     private void startAnimation() {
         timer.start();
         h.getChildren().remove(6);
         h.getChildren().add(stopButton);
+        initializeSimulationElements();
     }
 
     private void stopAnimation() {
@@ -158,6 +175,3 @@ public class Window {
         return this.s;
     }
 }
-
-// TODO: make simulation compatible with screen size
-// TODO: add positioning for simulation elements
