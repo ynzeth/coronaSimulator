@@ -16,25 +16,25 @@ public class Simulation {
         this.radius = radius;
         this.chance = chance;
 
-        startSimulation();
+        initializeSimulation();
     }
 
     public void updateAmountOfPeople(int amountOfPeople) {
         this.amountOfPeople = amountOfPeople;
-        startSimulation();
+        initializeSimulation();
     }
 
     public void updateRadius(double radius) {
         this.radius = radius;
-        startSimulation();
+        initializeSimulation();
     }
 
     public void updateChance(double chance) {
         this.chance = chance;
-        startSimulation();
+        initializeSimulation();
     }
 
-    private void startSimulation(){
+    private void initializeSimulation(){
         locations = new int[this.amountOfPeople][4];
 
         for(int i = 0; i < this.amountOfPeople; i++){
