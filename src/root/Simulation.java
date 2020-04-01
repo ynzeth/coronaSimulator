@@ -93,4 +93,24 @@ public class Simulation {
 
         return (distance < this.radius);
     }
+
+    public int[][] getLocations(){
+        return this.locations;
+    }
+
+    public boolean[] getInfected(){
+        return this.infections;
+    }
+
+    public int getInfectionCount(){
+        return this.infectionCount;
+    }
+
+    public int getAmountOfPeople(){
+        return this.amountOfPeople;
+    }
+
+    public double getRadius(){
+        return this.radius;
+    }
 }
