@@ -20,3 +20,7 @@ public class Main extends Application {
         System.out.println("Application closed");
     }
 }
+
+// TODO: Add infection counter
+// TODO: Add controllable person?
+// TODO: Make chance to be speed
