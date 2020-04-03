@@ -58,8 +58,7 @@ public class Simulation {
 
     public void updateRadius(double radius) {
         this.radius = radius;
-        initializeSimulation();
-        w.initializeSimulationElements();
+        w.updateSimulationElements();
     }
 
     public void updateSpeed(double speed) {

@@ -75,7 +75,6 @@ public class Window {
         radiusSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
             System.out.println("Radius: " + newVal);
             this.sim.updateRadius((double) newVal);
-            stopAnimation();
         });
         populationSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
             System.out.println("Population: " + newVal);
@@ -129,6 +128,12 @@ public class Window {
 
         p.getChildren().addAll(people);
         p.getChildren().addAll(radii);
+    }
+
+    public void updateSimulationElements() {
+        for(int i = 0; i < sim.getAmountOfPeople(); i++) {
+            ((Circle) p.getChildren().get(sim.getAmountOfPeople() + i)).setRadius(sim.getRadius()/2);
+        }
     }
 
     private void initializeAnimation(){
