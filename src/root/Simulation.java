@@ -4,7 +4,7 @@ public class Simulation {
     //init variables
     private int amountOfPeople;
     private double radius;
-    private double chance;
+    private double speed;
 
     //screen dimensions
     private int screenWidth;
@@ -18,10 +18,10 @@ public class Simulation {
     //window
     private Window w;
 
-    public Simulation(int amountOfPeople, double radius, double chance, int width, int height, Window w) {
+    public Simulation(int amountOfPeople, double radius, double speed, int width, int height, Window w) {
         this.amountOfPeople = amountOfPeople;
         this.radius = radius;
-        this.chance = chance;
+        this.speed = speed;
 
         this.screenWidth = width;
         this.screenHeight = height;
@@ -62,16 +62,14 @@ public class Simulation {
         w.initializeSimulationElements();
     }
 
-    public void updateChance(double chance) {
-        this.chance = chance;
-        initializeSimulation();
-        w.initializeSimulationElements();
+    public void updateSpeed(double speed) {
+        this.speed = speed;
     }
 
     public void updateSimulation(double millis){
         for(int i = 0; i < this.amountOfPeople; i++) {
-            locations[i][0] += (locations[i][2] * (millis/1000));
-            locations[i][1] += (locations[i][3] * (millis/1000));
+            locations[i][0] += (locations[i][2] * (millis/1000)) * speed;
+            locations[i][1] += (locations[i][3] * (millis/1000)) * speed;
 
             if(locations[i][0] < -this.radius){
                 locations[i][0] += screenWidth + (2 * this.radius);

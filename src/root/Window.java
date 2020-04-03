@@ -30,7 +30,7 @@ public class Window {
 
     /// lvl 3
     private Slider radiusSlider;
-    private Slider chanceSlider;
+    private Slider speedSlider;
     private Slider populationSlider;
     private Button startButton;
     private Button stopButton;
@@ -51,7 +51,7 @@ public class Window {
         this.g = new Group(p);
         this.s = new Scene(g, screenWidth,  screenHeight);
 
-        this.sim = new Simulation(10, screenWidth/20, 0.1, screenWidth, screenHeight, this);
+        this.sim = new Simulation(10, screenWidth/20, 0.5, screenWidth, screenHeight, this);
 
         initializeScrollers();
         initializeAnimation();
@@ -60,7 +60,7 @@ public class Window {
     private void initializeScrollers() {
         this.radiusSlider = new Slider();
         this.populationSlider = new Slider();
-        this.chanceSlider = new Slider();
+        this.speedSlider = new Slider();
 
         populationSlider.setMin(2);
         populationSlider.setMax(50);
@@ -68,9 +68,9 @@ public class Window {
         radiusSlider.setMin(5);
         radiusSlider.setMax(screenWidth/4);
         radiusSlider.setValue(screenWidth/20);
-        chanceSlider.setMin(0);
-        chanceSlider.setMax(1);
-        chanceSlider.setValue(0.1);
+        speedSlider.setMin(0);
+        speedSlider.setMax(1);
+        speedSlider.setValue(0.5);
 
         radiusSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
             System.out.println("Radius: " + newVal);
@@ -82,15 +82,14 @@ public class Window {
             this.sim.updateAmountOfPeople(newVal.intValue());
             stopAnimation();
         });
-        chanceSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
-            System.out.println("Chance of infection: " + newVal);
-            this.sim.updateChance((double) newVal);
-            stopAnimation();
+        speedSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
+            System.out.println("Speed of particles: " + newVal);
+            this.sim.updateSpeed((double) newVal);
         });
 
         Text radiusText = new Text(" Radius: "); radiusText.setFill(Color.WHITE);
         Text populationText = new Text(" Population: "); populationText.setFill(Color.WHITE);
-        Text chanceText = new Text(" Chance of infection: "); chanceText.setFill(Color.WHITE);
+        Text speedText = new Text(" Speed: "); speedText.setFill(Color.WHITE);
 
         this.startButton = new Button("Start");
         this.stopButton = new Button("Stop");
@@ -109,7 +108,7 @@ public class Window {
             }
         });
 
-        this.h = new HBox(radiusText, radiusSlider, populationText, populationSlider, chanceText, chanceSlider, startButton);
+        this.h = new HBox(radiusText, radiusSlider, populationText, populationSlider, speedText, speedSlider, startButton);
         h.setBackground(new Background(new BackgroundFill(Color.BLACK, new CornerRadii(0), new Insets(0,0,0,0))));
         h.setPrefWidth(s.getWidth());
         g.getChildren().add(h);
