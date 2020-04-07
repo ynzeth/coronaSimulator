@@ -23,5 +23,3 @@ public class Main extends Application {
 
 // TODO: Add infection counter
 // TODO: Add controllable person?
-// TODO: Make sure you can resume without resetting simulation
-// TODO: Fix frame rate issues with small radii

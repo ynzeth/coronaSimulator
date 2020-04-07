@@ -34,6 +34,7 @@ public class Window {
     private Slider populationSlider;
     private Button startButton;
     private Button stopButton;
+    private Button resetButton;
 
     // External
     private Simulation sim;
@@ -53,11 +54,12 @@ public class Window {
 
         this.sim = new Simulation(10, screenWidth/20, 0.5, screenWidth, screenHeight, this);
 
-        initializeScrollers();
+        initializeHUD();
         initializeAnimation();
+        initializeSimulationElements();
     }
 
-    private void initializeScrollers() {
+    private void initializeHUD() {
         this.radiusSlider = new Slider();
         this.populationSlider = new Slider();
         this.speedSlider = new Slider();
@@ -65,7 +67,7 @@ public class Window {
         populationSlider.setMin(2);
         populationSlider.setMax(50);
         populationSlider.setValue(10);
-        radiusSlider.setMin(5);
+        radiusSlider.setMin(20);
         radiusSlider.setMax(screenWidth/4);
         radiusSlider.setValue(screenWidth/20);
         speedSlider.setMin(0);
@@ -92,6 +94,7 @@ public class Window {
 
         this.startButton = new Button("Start");
         this.stopButton = new Button("Stop");
+        this.resetButton = new Button("Reset");
 
         startButton.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
             @Override
@@ -106,8 +109,14 @@ public class Window {
                 stopAnimation();
             }
         });
+        resetButton.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                resetSimulation();
+            }
+        });
 
-        this.h = new HBox(radiusText, radiusSlider, populationText, populationSlider, speedText, speedSlider, startButton);
+        this.h = new HBox(radiusText, radiusSlider, populationText, populationSlider, speedText, speedSlider, resetButton, startButton);
         h.setBackground(new Background(new BackgroundFill(Color.BLACK, new CornerRadii(0), new Insets(0,0,0,0))));
         h.setPrefWidth(s.getWidth());
         g.getChildren().add(h);
@@ -164,15 +173,20 @@ public class Window {
 
     private void startAnimation() {
         timer.start();
-        h.getChildren().remove(6);
+        h.getChildren().remove(7);
         h.getChildren().add(stopButton);
-        initializeSimulationElements();
     }
 
     private void stopAnimation() {
         timer.stop();
-        h.getChildren().remove(6);
+        h.getChildren().remove(7);
         h.getChildren().add(startButton);
+        this.lastTimeStamp = null;
+    }
+
+    private void resetSimulation() {
+        this.sim.resetSimulation();
+        initializeSimulationElements();
     }
 
     public Scene getScene() {

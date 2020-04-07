@@ -35,10 +35,11 @@ public class Simulation {
         locations = new int[this.amountOfPeople][4];
 
         for(int i = 0; i < this.amountOfPeople; i++){
-            locations[i][0] = (int) (Math.random() * screenWidth); // posX
-            locations[i][1] = (int) (Math.random() * screenHeight); // posY
-            locations[i][2] = (int) (Math.random() * screenWidth) - (screenWidth/2); // speedX / second
-            locations[i][3] = (int) (Math.random() * screenHeight) - (screenHeight/2); // speedY / second
+            int smallestDimension = Math.min(screenHeight, screenWidth);
+            locations[i][0] = (int) (Math.random() * smallestDimension); // posX
+            locations[i][1] = (int) (Math.random() * smallestDimension); // posY
+            locations[i][2] = (int) (Math.random() * smallestDimension) - (smallestDimension/2); // speedX / second
+            locations[i][3] = (int) (Math.random() * smallestDimension) - (smallestDimension/2); // speedY / second
         }
 
         this.infections = new boolean[amountOfPeople];
@@ -65,10 +66,16 @@ public class Simulation {
         this.speed = speed;
     }
 
+    public void resetSimulation() {
+        this.initializeSimulation();
+    }
+
     public void updateSimulation(double millis){
         for(int i = 0; i < this.amountOfPeople; i++) {
-            locations[i][0] += (locations[i][2] * (millis/1000)) * speed;
-            locations[i][1] += (locations[i][3] * (millis/1000)) * speed;
+            if((locations[i][2] * (millis/1000)) * speed != 0 && (locations[i][3] * (millis/1000)) * speed != 0) {
+                locations[i][0] += (locations[i][2] * (millis/1000)) * speed;
+                locations[i][1] += (locations[i][3] * (millis/1000)) * speed;
+            }
 
             if(locations[i][0] < -this.radius){
                 locations[i][0] += screenWidth + (2 * this.radius);
