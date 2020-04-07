@@ -43,7 +43,7 @@ public class Window {
     private AnimationTimer timer;
     private Long lastTimeStamp;
 
-    //screen dimensions
+    // Screen dimensions
     private final static int screenWidth = 1500;
     private final static int screenHeight = 800;
 
