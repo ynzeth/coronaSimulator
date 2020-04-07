@@ -77,17 +77,15 @@ public class Simulation {
                 locations[i][1] += (locations[i][3] * (millis/1000)) * speed;
             }
 
-            if(locations[i][0] < -this.radius){
-                locations[i][0] += screenWidth + (2 * this.radius);
-            } if(locations[i][1] < -this.radius){
-                locations[i][1] += screenHeight + (2 * this.radius);
-            } if(locations[i][0] > screenWidth + this.radius){
-                locations[i][0] -= (screenWidth + (2 * this.radius));
-            } if(locations[i][1] > screenHeight + this.radius){
-                locations[i][1] -= (screenHeight + (2 * this.radius));
+            if(locations[i][0] < 0){
+                locations[i][0] += screenWidth;
+            } if(locations[i][1] < 0){
+                locations[i][1] += screenHeight;
+            } if(locations[i][0] > screenWidth){
+                locations[i][0] -= screenWidth;
+            } if(locations[i][1] > screenHeight ){
+                locations[i][1] -= screenHeight;
             }
-
-            System.out.println("(" + locations[i][0] + ", " + locations[i][1] + ")");
         }
 
         for(int i = 0; i < amountOfPeople; i++) {
@@ -102,8 +100,6 @@ public class Simulation {
                 }
             }
         }
-
-        System.out.println("Amount of infections: " + infectionCount);
     }
 
     private boolean inRange(int i, int j) {
